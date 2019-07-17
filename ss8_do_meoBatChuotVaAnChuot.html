@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mèo bắt chuột và ăn chuột</title>
+</head>
+<body>
+<canvas id="gameCanvas" width="1000px" height="600px" style="border: 1px solid black"></canvas>
+<audio id="audio">
+    <source src="keu.ogg" type="audio/ogg">
+    <source src="keu.mp3" type="audio/mpeg">
+</audio>
+
+<script src="Pet.js"></script>
+<script>
+    let canvas = document.getElementById('gameCanvas');
+    let audio = document.getElementById('audio');
+    let mouse = new Pet('Chuột', 10, 700, 700, 'chuot.jpg', 100, 100);
+    let cat = new Pet('Mèo', 10, 0, 0, 'meo.jpg', 200, 200);
+
+    function clearCanvas() {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function movePet() {
+        clearCanvas();
+        if (!cat.isTouch(mouse)) {
+            cat.moveRight();
+            cat.moveDown()
+            mouse.moveLeft();
+            mouse.moveUp();
+        } else {
+            cat.audioPlay(audio);
+            cat.faceImg = 'meo1.jpg';
+            setTimeout(function () {
+                cat.audioPause(audio);
+                audio.currentTime = 0;
+            }, 3000);
+        }
+        mouse.draw(canvas);
+        cat.draw(canvas);
+    }
+
+    setInterval(movePet, 100);
+</script>
+</body>
+</html>
